@@ -1,8 +1,8 @@
 # Setup
 title: Syeam's Blog
-url: https://getpoole.com
+url: https://shr1ftyy.github.io
 paginate: 1
-baseurl: ""
+baseurl: "/blog"
 permalink: pretty
 
 # Gems
