@@ -10,7 +10,7 @@ For my first research project for COMP SCI 1104, I scraped tweets mentioning sev
 ## Methodology
 
 Tweets from 2019 were scraped from Twitter, and daily stock close, open, high, and low price, percentage change and the trading volume of 15 selected stocks out of the 30 which served as components for the Dow Jones Industrial Average Index in 2019 was gathered from the 28th of February to the 17th of December from Yahoo Finance. Furthermore, no more than 5000 tweets are scraped per day recorded for the sake of time management (since data-scraping tends to be the most tedious aspect of such a process, and I didn't have much time until this project was due). Each tweet was passed through a pre-trained Recurrent Neural Network (RNN) which took in the tokenized text as input and passed it through various layers of Gated Recurrent Units (GRUs), after which a 1-hot 3-vector was output representing a probability distribution of the sentiment of the tweet content being either ‘negative’, ‘neutral’, or ‘positive’. <br><br>
-![GRU](/assets/gru.png) 
+![GRU]({{ site.baseurl }}/assets/gru.png) 
 *A visual representation of the RNN used to scrape through thousands of tweets for sentiment – with an input layer that leads to 3 layers containing 256 units of GRUs each, all of which eventually spit out a probability vector representing the sentiment of the input text.*
 
 All this information, alongside the daily tweet volume, the mode of sentiment, overall daily sentiment and frequency values of sentiment are dumped onto storage in the form of a JSON file by order of date, ready to be loaded for data analysis. The following highlights how some of the variables are calculated: <br>
@@ -28,7 +28,7 @@ During initial data exploration, the connection between sentiment and daily perc
 
 Keen to understand the context of these anomalies, I explored the specific dates and the stock in question. The results were enlightening. It appeared that these surges in Twitter chatter coincided with the announcement of the company's earnings results, aligning with the shares represented by the stock tickers.
 
-![polarity](/assets/polarity.png)
+![polarity]({{ site.baseurl }}/assets/polarity.png)
 *Tweet sentiment and daily price % change alongside trading and tweet volume with earnings and spike events labelled for Goldman Sach’s Stock on the NYSE. There are gaps in trade volume and price change data on holidays and weekends when the stock exchanges are closed. Notice, how tweeting and trading volume spikes during/the day after an earnings announcement, and in some cases, also appear to cause large movements in the GS ’s price.*
 
 This finding hinted at an intriguing prospect: Twitter volume might be a promising predictor of stock movements. To validate this hypothesis, I took a more rigorous approach. I computed the Pearson correlation coefficients and executed Granger-causality tests (with a 3-day lag) between the previously mentioned variables. My analysis included absolute percentage price change, rather than just the percentage price change, given that volume cannot fall below zero.
@@ -93,11 +93,11 @@ In the above equation, $\tau$ is a timestamp within the event window, with $\tau
 
 After running calculations for Pearson’s coefficient for tweet volume vs. abs. return %  and polarity and return %, along with granger-cause tests as well, it was apparent that there was little to no forecasting power available for price movements given tweet polarity. Yet, there was a moderate correlation between tweet volume and absolute return % (with values p-values ranging between ~0.4-~0.7). Regardless, the null hypothesis, that tweet sentiment polarity does not affect price movement direction, must be accepted. <br>
 
-![granger](/assets/granger.png)
+![granger]({{ site.baseurl }}/assets/granger.png)
 *Pearson’s and Granger Cause values for all chosen tickers. Notice that the Granger-Cause test between polarity and % returns only passes (<0.05) for only 2 of the stocks, yet the p-values indicate a moderate correlation between tweet volume and absolute return % given a 3- day lag period*
 
 However, even though polarity may not always correlate with price movement, it appears it can be used as a proxy for predicting price prediction during tweet volume spike events. The following visualises the impact of such spike events on the CAR (%) aggregated from all 15 stocks: <br><br>
-![event_study](/assets/event_study.png)
+![event_study]({{ site.baseurl }}/assets/event_study.png)
 
 Armed with our data, we're now set to compute the test statistic to examine the statistical significance of tweet spikes. Notably, the variance of the Cumulative Abnormal Return (CAR) stands around 0.025%, with abnormal returns of roughly 1.28% for positive events and -1% for negative events. This crunches down to a test statistic of around 8.01 for positive events and -6.32 for negative ones, effectively overturning the null hypothesis - tweet spikes indeed wield significant sway over stock returns.
 
